@@ -1,0 +1,5 @@
+﻿  Task_3.cpp
+D:\University\2 курс 2 семестр\ООП\Задания\Structures\Task_3\Task_3.cpp(21,24): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+D:\University\2 курс 2 семестр\ООП\Задания\Structures\Task_3\Task_3.cpp(22,23): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+D:\University\2 курс 2 семестр\ООП\Задания\Structures\Task_3\Task_3.cpp(23,24): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+  Task_3.vcxproj -> D:\University\2 курс 2 семестр\ООП\Задания\Structures\x64\Debug\Task_3.exe
