@@ -1,20 +1,43 @@
-﻿// task_6.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
+﻿#include <iostream>
+using namespace std;
 
-#include <iostream>
+int compstr(const char*, const char*); 
 
-int main()
-{
-    std::cout << "Hello World!\n";
+int main() {
+    const int SIZE = 100;
+    char str1[SIZE], str2[SIZE];
+
+    cout << "Enter first string: ";
+    cin >> str1;
+
+    cout << "Enter second string: ";
+    cin >> str2;
+
+    int result = compstr(str1, str2);
+
+    if (result == -1)
+        cout << "First string comes first alphabetically." << endl;
+    else if (result == 1)
+        cout << "Second string comes first alphabetically." << endl;
+    else
+        cout << "Strings are equal." << endl;
+
+    return 0;
 }
 
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
-
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
+int compstr(const char* s1, const char* s2) {
+    while (*s1 && *s2) {
+        if (*s1 < *s2)
+            return -1;
+        else if (*s1 > *s2)
+            return 1;
+        s1++;
+        s2++;
+    }
+    if (*s1 == '\0' && *s2 == '\0')
+        return 0;
+    else if (*s1 == '\0')
+        return -1;
+    else
+        return 1;
+}

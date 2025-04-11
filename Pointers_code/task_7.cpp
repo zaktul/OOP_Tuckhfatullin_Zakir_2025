@@ -1,20 +1,63 @@
-﻿// task_7.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
+﻿#include <iostream>
+using namespace std;
 
-#include <iostream>
+class person {
+private:
+    char name[40];
+    float salary;
 
-int main()
-{
-    std::cout << "Hello World!\n";
+public:
+    void setData() {
+        cout << "Enter name: ";
+        cin >> name;
+        cout << "Enter salary: ";
+        cin >> salary;
+    }
+
+    void printData() {
+        cout << "Name: " << name << ", Salary: $" << salary;
+    }
+
+    float getSalary() {
+        return salary;
+    }
+};
+
+void salsort(person* [], int);
+
+int main() {
+    person* persPtr[100];
+    int n = 0;
+    char choice;
+
+    do {
+        persPtr[n] = new person;
+        persPtr[n]->setData();
+        n++;
+        cout << "Do you want to continue (y/n)? ";
+        cin >> choice;
+    } while (choice == 'y' || choice == 'Y');
+
+    salsort(persPtr, n);
+
+    cout << "\nSorted list by salary:\n";
+    for (int i = 0; i < n; i++) {
+        cout << "Employee #" << i + 1 << ": ";
+        persPtr[i]->printData();
+        cout << endl;
+    }
+
+    return 0;
 }
 
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
-
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
+void salsort(person* pp[], int n) {
+    for (int j = 0; j < n - 1; j++) {
+        for (int k = j + 1; k < n; k++) {
+            if ((*(pp + j))->getSalary() > (*(pp + k))->getSalary()) {
+                person* temp = *(pp + j);
+                *(pp + j) = *(pp + k);
+                *(pp + k) = temp;
+            }
+        }
+    }
+}

@@ -1,20 +1,57 @@
-﻿// task_12.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
+﻿#include <iostream>
+using namespace std;
 
-#include <iostream>
+const int MAX = 100;
+float fmemory[MAX]; // симулируемая память под float
+int pmemory[MAX];   // симулируемая память под указатели
+int fmem_top = 0;
+int pmem_top = 0;
 
-int main()
-{
-    std::cout << "Hello World!\n";
+class Float {
+private:
+    int addr;
+
+public:
+    Float(float value) {
+        addr = fmem_top++;
+        fmemory[addr] = value;
+    }
+
+    int operator&() {
+        return addr;
+    }
+};
+
+class ptrFloat {
+private:
+    int addr;
+
+public:
+    ptrFloat(int a) {
+        addr = pmem_top++;
+        pmemory[addr] = a;
+    }
+
+    float& operator*() {
+        return fmemory[pmemory[addr]];
+    }
+};
+
+int main() {
+    Float var1 = 1.234f;
+    Float var2 = 5.678f;
+
+    ptrFloat ptr1 = &var1;
+    ptrFloat ptr2 = &var2;
+
+    cout << "*ptr1 = " << *ptr1 << endl;
+    cout << "*ptr2 = " << *ptr2 << endl;
+
+    *ptr1 = 7.123f;
+    *ptr2 = 8.456f;
+
+    cout << "*ptr1 = " << *ptr1 << endl;
+    cout << "*ptr2 = " << *ptr2 << endl;
+
+    return 0;
 }
-
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
-
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
