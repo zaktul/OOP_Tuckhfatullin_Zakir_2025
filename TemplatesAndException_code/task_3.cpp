@@ -1,20 +1,92 @@
-﻿// task_3.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
+﻿#include <iostream>
+#include <stdexcept>
+using namespace std;
+template <typename T>
+class Queue {
+private:
+    struct Node {
+        T value;
+        Node* next;
+    };
+    Node* f;
+    Node* r;
+    int count;
+    int maxSize;
+public:
+    Queue(int size) : f(nullptr), r(nullptr), count(0), maxSize(size) {}
 
-#include <iostream>
+    void enqueue(T value) {
+        if (count >= maxSize) {
+            throw overflow_error("Ошибка: превышен размер очереди!");
+        }
+        Node* newNode = new Node{ value, nullptr };
+        if (r) r->next = newNode;
+        r = newNode;
+        if (!f) f = newNode;
+        count++;
+    }
 
-int main()
-{
-    std::cout << "Hello World!\n";
+    void dequeue() {
+        if (!f) {
+            throw underflow_error("Ошибка: попытка удаления элемента из пустой очереди!");
+        }
+        Node* temp = f;
+        f = f->next;
+        delete temp;
+        count--;
+
+        if (!f) r = nullptr;
+    }
+
+    void display() {
+        if (!f) {
+            cout << "Очередь пуста!" << endl;
+            return;
+        }
+        Node* temp = f;
+        while (temp) {
+            cout << temp->value << " ";
+            temp = temp->next;
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    setlocale(LC_ALL, "rus");
+    int size;
+    cout << "Введите максимальный размер очереди: ";
+    cin >> size;
+    Queue<int> q(size);
+    while (true) {
+        try {
+            int choice;
+            cout << "\n1. Добавить элемент в очередь\n2. Удалить элемент из очереди\n3. Показать очередь\n4. Выйти\nВыбор: ";
+            cin >> choice;
+
+            if (choice == 1) {
+                int val;
+                cout << "Введите значение: ";
+                cin >> val;
+                q.enqueue(val);
+            }
+            else if (choice == 2) {
+                q.dequeue();
+            }
+            else if (choice == 3) {
+                q.display();
+            }
+            else if (choice == 4) {
+                break;
+            }
+            else {
+                cout << "Неверный ввод! Попробуйте снова." << endl;
+            }
+        }
+        catch (const exception& e) {
+            cout << "Исключение: " << e.what() << endl;
+        }
+    }
+
+    return 0;
 }
-
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
-
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.

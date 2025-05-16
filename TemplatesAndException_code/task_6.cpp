@@ -1,20 +1,72 @@
-﻿// task_6.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
+﻿#include <iostream>
+#include <cstdlib>
 
-#include <iostream>
+using namespace std;
 
-int main()
-{
-    std::cout << "Hello World!\n";
+const int LIMIT = 100;
+
+template <typename mlk>
+class SafeArray {
+private:
+    mlk arr[LIMIT];
+    int l;
+    int u;
+public:
+    SafeArray(int lower, int upper) {
+        if (upper - lower >= LIMIT || lower >= upper) {
+            cout << "\nНекорректные границы массива!";
+            exit(1);
+        }
+        l = lower;
+        u = upper;
+    }
+
+    mlk& operator[](int index) {
+        if (index < l || index > u) {
+            cout << "\nОшибочный индекс!";
+            exit(1);
+        }
+        return arr[index - l];
+    }
+
+    int size() const {
+        return u - l + 1;
+    }
+};
+
+int main() {
+    setlocale(LC_ALL, "rus");
+
+    int v, ni;
+    cout << "Введите нижнюю границу массива int: ";
+    cin >> v;
+    cout << "Введите верхнюю границу массива int: ";
+    cin >> ni;
+    SafeArray<int> intArray(v, ni);
+    for (int i = v; i <= ni; i++)
+        intArray[i] = i * 10;
+    for (int i = v; i <= ni; i++)
+        cout << "Элемент intArray[" << i << "] = " << intArray[i] << endl;
+
+    cout << "Введите нижнюю границу массива double: ";
+    cin >> v;
+    cout << "Введите верхнюю границу массива double: ";
+    cin >> ni;
+    SafeArray<double> doubleArray(v, ni);
+    for (int i = v; i <= ni; i++)
+        doubleArray[i] = i * 1.5;
+    for (int i = v; i <= ni; i++)
+        cout << "Элемент doubleArray[" << i << "] = " << doubleArray[i] << endl;
+
+    cout << "Введите нижнюю границу массива char: ";
+    cin >> v;
+    cout << "Введите верхнюю границу массива char: ";
+    cin >> ni;
+    SafeArray<char> charArray(v, ni);
+    for (int i = v; i <= ni; i++)
+        charArray[i] = 'A' + (i - v);
+    for (int i = v; i <= ni; i++)
+        cout << "Элемент charArray[" << i << "] = " << charArray[i] << endl;
+
+    return 0;
 }
-
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
-
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.

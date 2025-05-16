@@ -1,20 +1,99 @@
-﻿// task_7.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
+﻿#include <iostream>
+using namespace std;
+template <class mlk>
+class frac {
+private:
+    mlk chis, znam;
+public:
+    frac() : chis(0), znam(1) {}
+    frac(mlk num, mlk den) {
+        if (den == 0) {
+            cout << "Ошибка: знаменатель не может быть 0!" << endl;
+            exit(1);
+        }
+        chis = num;
+        znam = den;
+    }
+    void getdata() {
+        char slash;
+        cout << "Введите дробь в формате числитель/знаменатель: ";
+        cin >> chis >> slash >> znam;
+        if (znam == 0) {
+            cout << "Ошибка: знаменатель не может быть 0!" << endl;
+            exit(1);
+        }
+    }
+    void putdata() const {
+        cout << "Дробь: " << chis << "/" << znam << endl;
+    }
+    frac operator+(const frac& f) const {
+        return frac(chis * f.znam + f.chis * znam, znam * f.znam);
+    }
+    frac operator-(const frac& f) const {
+        return frac(chis * f.znam - f.chis * znam, znam * f.znam);
+    }
+    frac operator*(const frac& f) const {
+        return frac(chis * f.chis, znam * f.znam);
+    }
+    frac operator/(const frac& f) const {
+        if (f.chis == 0) {
+            cout << "Ошибка: деление на ноль!" << endl;
+            exit(1);
+        }
+        return frac(chis * f.znam, znam * f.chis);
+    }
+};
 
-#include <iostream>
+int main() {
+    setlocale(LC_ALL, "rus");
+    char op;
+    cout << "Тип данных int:" << endl;
+    frac<int> int1, int2, resi;
+    int1.getdata(); int2.getdata();
+link1:
+    cout << "Выберите операцию (+, -, *, /): ";
+    cin >> op;
+    switch (op) {
+    case'+': resi = int1 + int2; break;
+    case'-': resi = int1 - int2; break;
+    case'*': resi = int1 * int2; break;
+    case'/': resi = int1 / int2; break;
+    default: cout << "Неверный ввод операции!\nПовторите ввод" << endl;
+        goto link1;
+    }
+    resi.putdata();
 
-int main()
-{
-    std::cout << "Hello World!\n";
+    cout << "Тип данных char:" << endl;
+    frac<char> char1, char2, resc;
+    char1.getdata(); char2.getdata();
+link2:
+    cout << "Выберите операцию (+, -, *, /): ";
+    cin >> op;
+    switch (op) {
+    case'+': resc = char1 + char2; break;
+    case'-': resc = char1 - char2; break;
+    case'*': resc = char1 * char2; break;
+    case'/': resc = char1 / char2; break;
+    default: cout << "Неверный ввод операции!\nПовторите ввод" << endl;
+        goto link2;
+    }
+    resc.putdata();
+
+    cout << "Тип данных long:" << endl;
+    frac<long> long1, long2, resl;
+    long1.getdata(); long2.getdata();
+link3:
+    cout << "Выберите операцию (+, -, *, /): ";
+    cin >> op;
+    switch (op) {
+    case'+': resl = long1 + long2; break;
+    case'-': resl = long1 - long2; break;
+    case'*': resl = long1 * long2; break;
+    case'/': resl = long1 / long2; break;
+    default: cout << "Неверный ввод операции!\nПовторите ввод" << endl;
+        goto link3;
+    }
+    resl.putdata();
+
+    return 0;
 }
-
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
-
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.

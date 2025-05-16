@@ -1,20 +1,83 @@
-﻿// task_12.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
+﻿#include <iostream>
+#include <fstream>
+#include <stdexcept>
+#include <string>
 
-#include <iostream>
+using namespace std;
+class FileException : public runtime_error {
+public:
+    FileException(const string& message) : runtime_error(message) {}
+};
 
-int main()
-{
-    std::cout << "Hello World!\n";
+class dofile {
+private:
+    fstream file;
+    string filename;
+
+public:
+    dofile(const string& fname, ios::openmode mode) : filename(fname) {
+        file.open(filename, mode);
+        if (!file) {
+            throw FileException("Ошибка: Не удалось открыть файл " + filename);
+        }
+    }
+    void write(const string& data) {
+        if (!file) {
+            throw FileException("Ошибка: Файл закрыт или недоступен для записи!");
+        }
+        file << data << endl;
+        if (!file) {
+            throw FileException("Ошибка: Ошибка записи в файл " + filename);
+        }
+    }
+
+    string read() {
+        if (!file) {
+            throw FileException("Ошибка: Файл закрыт или недоступен для чтения!");
+        }
+        string line;
+        if (!getline(file, line)) {
+            throw FileException("Ошибка: Не удалось прочитать строку из файла " + filename);
+        }
+        return line;
+    }
+
+    void rewind() {
+        if (!file) {
+            throw FileException("Ошибка: Файл не открыт!");
+        }
+        file.clear();
+        file.seekg(0, ios::beg);
+        file.seekp(0, ios::beg);
+    }
+
+    void close() {
+        if (file.is_open()) {
+            file.close();
+        }
+    }
+
+    ~dofile() {
+        close();
+    }
+};
+
+int main() {
+    setlocale(LC_ALL, "rus");
+
+    try {
+        dofile file("test.txt", ios::in | ios::out | ios::app);
+        file.write("Привет, мир!");
+        file.write("Это тестовая строка.");
+        file.rewind();
+        cout << "Содержимое файла:\n";
+        cout << file.read() << endl;
+        cout << file.read() << endl;
+
+    }
+    catch (const FileException& e) {
+        cout << "\nИсключение: " << e.what() << endl;
+    }
+
+    return 0;
 }
-
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
-
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.

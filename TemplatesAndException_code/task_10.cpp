@@ -1,20 +1,60 @@
-﻿// task_1-.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
+﻿#include <iostream>
+#include <stdexcept>
+#include <limits> 
+using namespace std;
+class Distance {
+private:
+    int feet;
+    float inches;
+public:
+    Distance(int f, float i) {
+        if (f < 0) {
+            throw invalid_argument("Ошибка: количество футов не может быть отрицательным!");
+        }
+        if (i < 0 || i >= 12) {
+            throw out_of_range("Ошибка: количество дюймов должно быть в диапазоне [0, 12)!");
+        }
+        feet = f;
+        inches = i;
+    }
+    void getDistance() {
+        cout << "Введите расстояние (футы и дюймы): ";
+        try {
+            if (!(cin >> feet)) {
+                throw invalid_argument("Ошибка: введено некорректное значение футов!");
+            }
+            if (!(cin >> inches)) {
+                throw invalid_argument("Ошибка: введено некорректное значение дюймов!");
+            }
+            if (feet < 0) {
+                throw invalid_argument("Ошибка: количество футов не может быть отрицательным!");
+            }
+            if (inches < 0 || inches >= 12) {
+                throw out_of_range("Ошибка: количество дюймов должно быть в диапазоне [0, 12)!");
+            }
+        }
+        catch (const exception& e) {
+            cout << "Исключение: " << e.what() << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            getDistance();
+        }
+    }
+    void showDistance() const {
+        cout << "Расстояние: " << feet << "'-" << inches << "\"" << endl;
+    }
+};
 
-#include <iostream>
-
-int main()
-{
-    std::cout << "Hello World!\n";
+int main() {
+    setlocale(LC_ALL, "rus");
+    try {
+        Distance d(5, 13);
+    }
+    catch (const exception& e) {
+        cout << "Ошибка в конструкторе: " << e.what() << endl;
+    }
+    Distance userDist(0, 0);
+    userDist.getDistance();
+    userDist.showDistance();
+    return 0;
 }
-
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
-
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.

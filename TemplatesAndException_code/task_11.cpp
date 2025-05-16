@@ -1,20 +1,67 @@
-﻿// task_11.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
+﻿#include <iostream>
+#include <stdexcept> 
+#include <cstring>    
+#include <windows.h>
+#include <string>
+using namespace std;
+class String {
+private:
+    static const int SZ = 80;
+    char str[SZ];
+public:
+    String() { strcpy_s(str, ""); }
+    String(const char* s) {
+        if (strlen(s) >= SZ) {
+            throw length_error("Ошибка: строка слишком длинная! Максимальный размер: " + to_string(SZ - 1));
+        }
+        strcpy_s(str, s);
+    }
 
-#include <iostream>
+    void display() const { cout << str; }
 
-int main()
-{
-    std::cout << "Hello World!\n";
+    void getdata() {
+        cout << "Введите строку: ";
+        cin.getline(str, SZ);
+    }
+
+    String& operator+=(const String& ss) {
+        if (strlen(str) + strlen(ss.str) >= SZ) {
+            throw overflow_error("Ошибка: переполнение при сложении строк! Максимальный размер: " + to_string(SZ - 1));
+        }
+        strcat_s(str, ss.str);
+        return *this;
+    }
+};
+
+int main() {
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+
+    try {
+        String s1, s2;
+        cout << "Введите первую строку:\n";
+        s1.getdata();
+        cout << "Введите вторую строку:\n";
+        s2.getdata();
+
+        cout << "Первая строка: ";
+        s1.display(); cout << endl;
+        cout << "Вторая строка: ";
+        s2.display();
+
+        s1 += s2;
+        cout << "\nПосле объединения:\n";
+        s1.display();
+    }
+    catch (const exception& e) {
+        cout << "\nИсключение: " << e.what() << endl;
+    }
+    try {
+        String s3 = "Очень длинная строка, превышающая лимит!";
+    }
+    catch (const exception& e) {
+        cout << "\nИсключение в конструкторе: " << e.what() << endl;
+    }
+
+    return 0;
 }
-
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
-
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
