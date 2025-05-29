@@ -1,0 +1,6 @@
+﻿  Online-cinema.cpp
+  RegularUser.cpp
+  User.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\include\filesystem(12): warning STL4038: The contents of <filesystem> are available only with C++17 or later.
+  Создание кода...
+  Online-cinema.vcxproj -> D:\University\2 курс 2 семестр\ООП\Задания\Online-cinema\x64\Debug\Online-cinema.exe
